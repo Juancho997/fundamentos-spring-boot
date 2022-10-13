@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-// habilitamos la clase UserPojo para ser inyectada como dependencia
+// habilitamos la clase UserPojo para ser inyectada como dependencia♦
 @EnableConfigurationProperties(UserPojo.class)
 public class GeneralConfiguration {
     @Value("${value.name}")

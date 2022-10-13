@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 
-// annotation para construir un POJO a partir de las propiedades de esta clase
+// annotation para construir un POJO a partir de las propiedades de esta♦ clase
 @ConstructorBinding
 // este prefix representa al user en application.properties
 @ConfigurationProperties(prefix = "user")

@@ -5,15 +5,19 @@ import com.fundamentos.springboot.fundamentos.bean.MyBeanWithDependency;
 import com.fundamentos.springboot.fundamentos.bean.MyBeanWithProperties;
 import com.fundamentos.springboot.fundamentos.component.ComponentDependency;
 import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+// "Implementación" es la clase que representa a un bean !!!
+
 @SpringBootApplication
 public class FundamentosApplication implements CommandLineRunner {
 
-	// "Implementación" es la clase que representa a un bean !!!
+	private final Log LOGGER = LogFactory.getLog(FundamentosApplication.class);
 
 	// me traigo la dependencia
 	private final ComponentDependency componentDependency;
@@ -46,5 +50,13 @@ public class FundamentosApplication implements CommandLineRunner {
 		myBeanWithDependency.printWithDependency();
 		System.out.println(myBeanWithProperties.function());
 		System.out.println(userPojo.getEmail() + "-" + userPojo.getPassword() + "-" + userPojo.getAge());
-	}
+
+		try{
+			// generando un error
+			int value = 10 / 0;
+			LOGGER.debug("My value: " + value);
+		}catch(Exception e){
+			LOGGER.error("Error trying to divide by 0 > " + e.getMessage());
+		}
+	};
 }
