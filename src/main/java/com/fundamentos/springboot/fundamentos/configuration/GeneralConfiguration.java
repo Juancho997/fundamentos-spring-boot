@@ -8,11 +8,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
 
 @Configuration
-// habilitamos la clase UserPojo para ser inyectada como dependencia♦
+// habilitamos el archivo de properties de BD nuevo
+@PropertySource("classpath:connection.properties")
+// habilitamos la clase UserPojo para ser inyectada como dependencia
 @EnableConfigurationProperties(UserPojo.class)
 public class GeneralConfiguration {
     @Value("${value.name}")
@@ -24,6 +27,16 @@ public class GeneralConfiguration {
     @Value("${value.random}")
     private String random;
 
+    //nos traemos los valores desde el archivo application.properties y las guardamos en variables
+    @Value("${jdbc.url}")
+    private String jdbcUrl;
+    @Value("${driver}")
+    private String driver;
+    @Value("${username}")
+    private String username;
+    @Value("${password}")
+    private String password;
+
     @Bean
     public MyBeanWithProperties function(){
         return new MyBeanWithPropertiesImplement(name, lastname);
@@ -33,10 +46,12 @@ public class GeneralConfiguration {
     @Bean
     public DataSource dataSource(){
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.h2.Driver");
-        dataSourceBuilder.url("jdbc:h2:mem:testdb");
-        dataSourceBuilder.username("SA");
-        dataSourceBuilder.password("");
+
+        //se las pasamos a la configuración de la BD
+        dataSourceBuilder.driverClassName(driver);
+        dataSourceBuilder.url(jdbcUrl);
+        dataSourceBuilder.username(username);
+        dataSourceBuilder.password(password);
         return dataSourceBuilder.build();
     }
 }
