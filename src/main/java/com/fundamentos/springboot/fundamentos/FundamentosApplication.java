@@ -70,14 +70,44 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	private void getInformationJpqlFromUser(){
 
-		LOGGER.info("Found user with findByUserEmail method > " +
-				userRepository.findByUserEmail("karen@domain.com")
-						.orElseThrow(()-> new RuntimeException("User not found")));
+//		LOGGER.info("Found user with findByUserEmail method > " +
+//				userRepository
+//						.findByUserEmail("karen@domain.com")
+//						.orElseThrow(()-> new RuntimeException("User not found")));
+//
+//		userRepository.findAndSort("ar", Sort.by("id")
+//				.descending()) //.ascending()
+//				.forEach(user -> LOGGER.info("User obtained with findAndSort method > " + user));
+//				//.forEach(LOGGER::info);
+//
+//		userRepository.findByName("John")
+//				.forEach(user -> LOGGER.info("User obtained with findByName query method > " + user));
+//
+		//Query methods
 
-		userRepository.findAndSort("ar", Sort.by("id")
-						.descending()) //.ascending()
-						//.forEach(user -> LOGGER.info("User obtained with findAndSort method > " + user));
-					    .forEach(LOGGER::info);
+//		LOGGER.info("User found with findByEmailAndName query method > " +
+//				userRepository
+//						.findByEmailAndName("marco@domain.com", "Marco")
+//						.orElseThrow(()-> new RuntimeException("Could not find user with email and name")));
+
+//		userRepository.findByNameLike("%ar%")
+//				.forEach(user -> LOGGER.info("User obtained with findByNameLike query method > " + user));
+
+//		userRepository.findByNameOrEmail(null,"marco@domain.com")
+//				.forEach(user -> LOGGER.info("User obtained with findByNameOrEmail query method > " + user));
+
+//		LocalDate start = LocalDate.of(2021, 1,1);
+//		LocalDate end = LocalDate.of(2021, 2,1);
+//
+//		userRepository.findByBirthDateBetween(start, end)
+//				.forEach(user -> LOGGER.info("User with a birthday between start and end dates > " + user));
+
+//		Al invocar a "like" en el método debemos utilizar %String%
+//		userRepository.findByNameLikeOrderByIdDesc("%ar")
+//						.forEach(user -> LOGGER.info("User found with  > findByNameLikeOrderByIdDesc query method " + user));
+//		Al invocar a "containing" solo pasamos el String como param
+//		userRepository.findByNameContainingOrderByIdDesc("ar")
+//						.forEach(user -> LOGGER.info("User found with  > findByNameContainingOrderByIdDesc query method " + user));
 
 	}
 

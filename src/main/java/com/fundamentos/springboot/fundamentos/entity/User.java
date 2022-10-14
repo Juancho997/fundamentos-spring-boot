@@ -21,7 +21,7 @@ public class User {
     @Column(length = 50)
     private String email;
 
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     // creamos la relación con otra tabla
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) //buscamos la prop con el nombre "user" que representa a la relación en la tabla Post
@@ -32,10 +32,10 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, LocalDate birthdate) {
+    public User(String name, String email, LocalDate birthDate) {
         this.name = name;
         this.email = email;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
     }
 
     public Long getId() {
@@ -62,12 +62,12 @@ public class User {
         this.email = email;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public List<Post> getPosts() {
@@ -84,7 +84,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", birthdate=" + birthdate +
+                ", birthDate=" + birthDate +
                 ", posts=" + posts +
                 '}';
     }
