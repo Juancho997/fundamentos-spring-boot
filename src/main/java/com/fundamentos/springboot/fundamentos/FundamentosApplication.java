@@ -109,6 +109,11 @@ public class FundamentosApplication implements CommandLineRunner {
 //		userRepository.findByNameContainingOrderByIdDesc("ar")
 //						.forEach(user -> LOGGER.info("User found with  > findByNameContainingOrderByIdDesc query method " + user));
 
+		LocalDate dateP = LocalDate.of(2021, 3, 13);
+		String emailP = "john@domain.com";
+
+		LOGGER.info(userRepository.getAllByBirthDateAndEmail(dateP, emailP)
+				.orElseThrow(() -> new RuntimeException("User not found with date and email Params")));
 	}
 
 
