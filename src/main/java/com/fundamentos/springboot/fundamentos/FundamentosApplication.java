@@ -7,12 +7,14 @@ import com.fundamentos.springboot.fundamentos.component.ComponentDependency;
 import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -25,7 +27,7 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	private final Log LOGGER = LogFactory.getLog(FundamentosApplication.class);
 
-	// me traigo la dependencia
+	// defino las dependencias a inyectar
 	private final ComponentDependency componentDependency;
 	private final MyBean myBean;
 	private final MyBeanWithDependency myBeanWithDependency;
@@ -34,9 +36,9 @@ public class FundamentosApplication implements CommandLineRunner {
 	private final UserRepository userRepository;
 
 
-	// paso al constructor la dependencia a inyectar
+	// inyecto las dependencias a través del constructor de la clase
 	// se puede tener n implementaciones a partir de una dependencia
-	// utilizando @Qualifier indicamos la dependencia a inyectar
+	// utilizando @Qualifier indicamos qué implementación se inyectará
 	// en este caso, debido a que tenemos dos dependencias que implementan la misma interfaz, elegimos "componentTwoImplement"
 	public FundamentosApplication(
 			@Qualifier("componentTwoImplement")
@@ -53,6 +55,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
 	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(FundamentosApplication.class, args);
 	}
@@ -62,8 +65,22 @@ public class FundamentosApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		//previousExamples();
 		saveUsersInDataBase();
-
+		getInformationJpqlFromUser();
 	};
+
+	private void getInformationJpqlFromUser(){
+
+		LOGGER.info("Found user with findByUserEmail method > " +
+				userRepository.findByUserEmail("karen@domain.com")
+						.orElseThrow(()-> new RuntimeException("User not found")));
+
+		userRepository.findAndSort("ar", Sort.by("id")
+						.descending()) //.ascending()
+						//.forEach(user -> LOGGER.info("User obtained with findAndSort method > " + user));
+					    .forEach(LOGGER::info);
+
+	}
+
 
 	//INICIALIZAR BD > persistencia
 	private void saveUsersInDataBase(){
@@ -81,7 +98,6 @@ public class FundamentosApplication implements CommandLineRunner {
 
 		userRepository.saveAll(userList);
 	};
-
 
 	private void previousExamples(){
 		componentDependency.saludar();
