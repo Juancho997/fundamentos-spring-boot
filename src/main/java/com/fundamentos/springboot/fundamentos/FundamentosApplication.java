@@ -8,6 +8,7 @@ import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
 
+import com.fundamentos.springboot.fundamentos.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +35,7 @@ public class FundamentosApplication implements CommandLineRunner {
 	private final MyBeanWithProperties myBeanWithProperties;
 	private final UserPojo userPojo;
 	private final UserRepository userRepository;
+	private final UserService userService;
 
 
 	// inyecto las dependencias a través del constructor de la clase
@@ -47,13 +49,15 @@ public class FundamentosApplication implements CommandLineRunner {
 			MyBeanWithDependency myBeanWithDependency,
 			MyBeanWithProperties myBeanWithProperties,
 			UserPojo userPojo,
-			UserRepository userRepository) {
+			UserRepository userRepository,
+			UserService userService) {
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
 		this.myBeanWithDependency = myBeanWithDependency;
 		this.myBeanWithProperties = myBeanWithProperties;
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	public static void main(String[] args) {
@@ -66,6 +70,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		//previousExamples();
 		saveUsersInDataBase();
 		getInformationJpqlFromUser();
+		saveWithErrorTransaction();
 	};
 
 	private void getInformationJpqlFromUser(){
@@ -148,4 +153,19 @@ public class FundamentosApplication implements CommandLineRunner {
 			LOGGER.error("Error trying to divide by 0 > " + e.getMessage());
 		}
 	};
+
+	private void saveWithErrorTransaction(){
+		User test1 = new User("TestTransactional1", "TestTransactional1@domain.com", LocalDate.now());
+		User test2 = new User("TestTransactional1", "TestTransactional2@domain.com", LocalDate.now());
+		User test3 = new User("TestTransactional1", "TestTransactional3@domain.com", LocalDate.now());
+		User test4 = new User("TestTransactional1", "TestTransactional4@domain.com", LocalDate.now());
+
+		List<User> usersTest = Arrays.asList(test1, test2, test3, test4);
+
+		userService.saveTransactional(usersTest);
+
+		userService.getAllUsers()
+				.forEach(user -> LOGGER.info("User from userService > " + user));
+
+	}
 }
