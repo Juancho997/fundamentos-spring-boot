@@ -1,7 +1,9 @@
 package com.fundamentos.springboot.fundamentos.controller;
 
 import com.fundamentos.springboot.fundamentos.entity.User;
+import com.fundamentos.springboot.fundamentos.repository.UserRepository;
 import com.fundamentos.springboot.fundamentos.usecase.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +18,19 @@ public class UserRestController {
     private final CreateUser createUser;
     private final DeleteUser deleteUser;
     private final UpdateUser updateUser;
+    private final UserRepository userRepository; //hacer un UseCase -> no mezclar capas/responsabilidades
 
     public UserRestController(
             GetUsers getUsers,
             CreateUser createUser,
             UpdateUser updateUser,
-            DeleteUser deleteUser) {
+            DeleteUser deleteUser,
+            UserRepository userRepository) {
         this.getUsers = getUsers;
         this.createUser = createUser;
         this.updateUser = updateUser;
         this.deleteUser = deleteUser;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -47,6 +52,12 @@ public class UserRestController {
     @PutMapping("/{id}")
     ResponseEntity updateUser(@PathVariable Long id, @RequestBody User newUser){
         return new ResponseEntity(updateUser.update(id, newUser), HttpStatus.OK);
+    }
+
+    @GetMapping("/pageable")
+    List<User> getUserPageable(@RequestParam int page, @RequestParam int size){
+        return userRepository.findAll(PageRequest.of(page, size)).getContent();
+
     }
 
 
