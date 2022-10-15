@@ -31,4 +31,24 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User save(User newUser) {
+        return userRepository.save(newUser);
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public User update(Long id, User newUser) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setName(newUser.getName());
+                    user.setBirthDate(newUser.getBirthDate());
+                    user.setEmail(newUser.getEmail());
+                    return userRepository.save(user);
+                }
+                ).orElseThrow(()->new RuntimeException("User with id : ${id} was not found"));
+
+    }
 }

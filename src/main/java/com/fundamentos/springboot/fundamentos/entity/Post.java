@@ -1,5 +1,7 @@
 package com.fundamentos.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,7 @@ public class Post {
 
     // creamos la relación con otra tabla
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     public Post() {

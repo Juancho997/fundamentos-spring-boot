@@ -21,6 +21,7 @@ public class User {
     @Column(length = 50, unique = true)
     private String email;
 
+    @Column
     private LocalDate birthDate;
 
     // creamos la relación con otra tabla
